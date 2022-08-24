@@ -11,11 +11,29 @@ router.post("/", async (request, response)=>{
         const {body} = request
         
         const generation = await create(body)
-        mentors.reduce((acc, cv) =>{
+        let newMentor = body.mentors.map((cv) =>{
 
+              let mentorUpdate = 
+                {
+                    name: `${cv.name}`,
+                    modulo: `${cv.module}`,
+                    edad: `${cv.age}`,
+                    type: `${cv.type}`,
+                    generacion:`${body.name}`
+                }
+                 
+                
+            
+            return mentorUpdate
+                
             
         })
-        response.status(201)
+        
+        newMentor.forEach(async element => {
+            await createMentor(element)
+        });
+        
+         response.status(201)
         response.json({
             succes: true,
             data: {
