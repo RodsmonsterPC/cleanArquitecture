@@ -15,18 +15,14 @@ router.post("/", async (request, response)=>{
 
               let mentorUpdate = 
                 {
+                    
                     name: `${cv.name}`,
                     modulo: `${cv.module}`,
                     edad: `${cv.age}`,
                     type: `${cv.type}`,
                     generacion:`${body.name}`
                 }
-                 
-                
-            
             return mentorUpdate
-                
-            
         })
         
         newMentor.forEach(async element => {
@@ -41,7 +37,6 @@ router.post("/", async (request, response)=>{
             }
         })
        
-
  }catch(err) {
     response.status(400)
     response.json({
