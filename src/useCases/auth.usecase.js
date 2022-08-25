@@ -2,25 +2,24 @@ const User = require("../models/user.model")
 
 const bcrypt = require("bcrypt")
 
+const creareError = require("http-errors")
+const createError = require("http-errors")
+const jwt = require("../lib/jwt.lib")
+
 const login = async (email, textplainPassword) =>{
 
     const user = await User.findOne({email})
 
-    if(!user){
-        const error = new Error("No estas autorizado")
-        error.status = 401
-
-        throw error
-    }
+    if(!user) throw createError(401, "No estas autorizado")
+    
 
     const isValidPassword = await bcrypt.compare(textplainPassword, user.password)
 
-    if(!isValidPassword){
-        const error = new Error("No estas autorizado")
-        error.status = 401
+    if(!isValidPassword) throw createError(401, "No estas autorizado")
 
-        throw error
-    }
+    const token = jwt.sign({id:user._id})
+    return token
 }
+
 
 module.exports = { login}
