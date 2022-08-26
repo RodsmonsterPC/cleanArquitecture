@@ -1,11 +1,13 @@
 
 const express = require("express")
-const { ReturnDocument } = require("mongodb")
-const { findByIdAndUpdate, find } = require("../models/mentor.model")
+
 const { create, update, erase, search } = require("../useCases/mentor.userCases")
 
+const auth = require("../middlewares/auth.middle")
 
 const router = express.Router()
+// middle global
+// router.use(auth)
 
 router.post("/", async (request, response)=>{
 
@@ -55,7 +57,7 @@ router.put("/:id", async (request, response)=>{
  }
 })
 
-router.get("/:id", async (request, response)=>{
+router.get("/:id", auth, async (request, response)=>{
     
     try{
         const {params} = request
