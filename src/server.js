@@ -1,5 +1,6 @@
 
 const express = require("express")
+const cors = require("cors")
 
 const routerKoder = require("./routes/koder.routes") 
 const routerMentor= require("./routes/mentor.routes")
@@ -8,6 +9,8 @@ const routerUser = require("./routes/user.routes")
 const routerAuth = require("./routes/auth.route")
 
 const app = express()
+
+app.use(cors())
 
 app.use(express.json())
 
