@@ -1,25 +1,24 @@
-const User = require("../models/user.model")
+const User = require("../models/user.model");
 
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
-const creareError = require("http-errors")
-const createError = require("http-errors")
-const jwt = require("../lib/jwt.lib")
+const createError = require("http-errors");
+const jwt = require("../lib/jwt.lib");
 
-const login = async (email, textplainPassword) =>{
+const login = async (email, textplainPassword) => {
+  const user = await User.findOne({ email });
 
-    const user = await User.findOne({email})
+  if (!user) throw createError(401, "No estas autorizado");
 
-    if(!user) throw createError(401, "No estas autorizado")
-    
+  const isValidPassword = await bcrypt.compare(
+    textplainPassword,
+    user.password
+  );
 
-    const isValidPassword = await bcrypt.compare(textplainPassword, user.password)
+  if (!isValidPassword) throw createError(401, "No estas autorizado");
 
-    if(!isValidPassword) throw createError(401, "No estas autorizado")
+  const token = jwt.sign({ id: user._id });
+  return token;
+};
 
-    const token = jwt.sign({id:user._id})
-    return token
-}
-
-
-module.exports = { login}
+module.exports = { login };

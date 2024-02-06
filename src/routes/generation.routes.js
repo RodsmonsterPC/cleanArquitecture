@@ -1,6 +1,6 @@
 const express = require("express")
 
-const { create, createMentor } = require("../useCases/generation.userCases")
+const { createGeneration} = require("../useCases/generation.userCases")
 
 const router = express.Router()
 
@@ -10,24 +10,7 @@ router.post("/", async (request, response)=>{
         
         const {body} = request
         
-        const generation = await create(body)
-        let newMentor = body.mentors.map((cv) =>{
-
-              let mentorUpdate = 
-                {
-                    
-                    name: `${cv.name}`,
-                    modulo: `${cv.module}`,
-                    edad: `${cv.age}`,
-                    type: `${cv.type}`,
-                    generacion:`${body.name}`
-                }
-            return mentorUpdate
-        })
-        
-        newMentor.forEach(async element => {
-            await createMentor(element)
-        });
+        const generation = await createGeneration(body)
         
          response.status(201)
         response.json({
